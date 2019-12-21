@@ -11,7 +11,7 @@
         xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        map:cameraZoom="16"
+        map:cameraZoom="13"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
