@@ -118,21 +118,27 @@ public class MapFragment extends SupportMapFragment
     public void onLocationChanged(Location location)
     {
         lastLocation = location;
-        if (currentMarker != null) {
-           currentMarker.remove();
-        }
 
-        // Place current location marker
+        // Get current lat and long for location
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Location");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        currentMarker = googleMap.addMarker(markerOptions);
 
         // Move map camera
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,18));
+    }
 
+    public LatLng saveCurrentLocation() {
+        if (currentMarker != null) {
+            currentMarker.remove();
+        }
+
+        // Place location marker for saved parking spot
+        LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title("Car Parked Here");
+        currentMarker = googleMap.addMarker(markerOptions);
+
+        return latLng;
     }
 
     private void checkLocationPermission() {
@@ -198,9 +204,6 @@ public class MapFragment extends SupportMapFragment
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 }
