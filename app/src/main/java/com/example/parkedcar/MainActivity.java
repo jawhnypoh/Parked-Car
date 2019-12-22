@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.parkedcar.savedLocationsDB.SavedLocationsContract;
 import com.example.parkedcar.savedLocationsDB.SavedLocationsDBHelper;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -47,5 +49,33 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "currentLocation: " + currentLocation.toString());
             }
         });
+    }
+
+    private long addLocationToDB(String latlng, String name) {
+        ContentValues row = new ContentValues();
+
+        row.put(SavedLocationsContract.SavedLocations.COLUMN_SAVEDLOCATION_LATLNG, latlng);
+        row.put(SavedLocationsContract.SavedLocations.COLUMN_SAVEDLOCATION_NAME, name);
+
+        db = dbHelper.getWritableDatabase();
+        long status = db.insert(SavedLocationsContract.SavedLocations.TABLE_NAME, null, row);
+        db.close();
+
+        return status;
+    }
+
+    private long deleteLocationFromDB(String latlng) {
+        if( latlng != null) {
+            String sqlSelection = SavedLocationsContract.SavedLocations.COLUMN_SAVEDLOCATION_LATLNG + " = ?";
+            String[] sqlSelectionArgs ={latlng};
+            db = dbHelper.getWritableDatabase();
+            long status = db.delete(SavedLocationsContract.SavedLocations.TABLE_NAME, sqlSelection, sqlSelectionArgs);
+            db.close();
+            return status;
+        }
+        else {
+            Log.d(TAG, "Failed to remove saved location from the database ");
+            return -1;
+        }
     }
 }
