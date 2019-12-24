@@ -10,11 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.parkedcar.savedLocationsDB.SavedLocationsContract;
 import com.example.parkedcar.savedLocationsDB.SavedLocationsDBHelper;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,9 +43,10 @@ public class MainActivity extends AppCompatActivity {
         saveLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Parking Location Saved", Toast.LENGTH_SHORT).show();
-                LatLng currentLocation = mapFragment.saveCurrentLocation();
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Parking Location Saved", Snackbar.LENGTH_LONG);
+                snackbar.show();
 
+                LatLng currentLocation = mapFragment.saveCurrentLocation();
                 Log.d(TAG, "currentLocation: " + currentLocation.toString());
             }
         });

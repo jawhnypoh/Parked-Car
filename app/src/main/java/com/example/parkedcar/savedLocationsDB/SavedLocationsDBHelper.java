@@ -19,7 +19,6 @@ public class SavedLocationsDBHelper extends SQLiteOpenHelper {
                         SavedLocationsContract.SavedLocations._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         SavedLocationsContract.SavedLocations.COLUMN_SAVEDLOCATION_LATLNG + " TEXT NOT NULL, " +
                         SavedLocationsContract.SavedLocations.COLUMN_SAVEDLOCATION_NAME + " TEXT, " +
-                        SavedLocationsContract.SavedLocations.COLUMN_BLOCKED + " INT DEFAULT 0 " +
                         ");";
 
         db.execSQL(SQL_CREATE_FOLLOWING_SAVEDLOCATIONS_TABLE);
