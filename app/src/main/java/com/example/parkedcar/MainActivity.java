@@ -24,10 +24,28 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     private SavedLocationsDBHelper dbHelper;
 
+    LatLng currentLocation;
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+
+        Log.d(TAG, "onSavedInstanceState() called ");
+        // Put current location Lat and Long into a string in onSaveInstanceState
+        state.putSerializable("savedLocation", saveCurrentLocationString());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(savedInstanceState != null && savedInstanceState.getSerializable("savedLocation") != null) {
+            Log.d(TAG, "savedInstanceState: "  + savedInstanceState.toString());
+        }
+        else {
+            Log.d(TAG, "savedInstanceState is null");
+        }
 
         // Set up database
         dbHelper = new SavedLocationsDBHelper(this);
@@ -46,10 +64,17 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Parking Location Saved", Snackbar.LENGTH_LONG);
                 snackbar.show();
 
-                LatLng currentLocation = mapFragment.saveCurrentLocation();
-                Log.d(TAG, "currentLocation: " + currentLocation.toString());
+                currentLocation = mapFragment.saveCurrentLocation();
+                saveCurrentLocationString();
             }
         });
+    }
+
+    private String saveCurrentLocationString() {
+        String savedLocation = mapFragment.saveCurrentLocation().toString();
+        Log.d(TAG, "currentLocation: " + currentLocation.toString());
+
+        return savedLocation;
     }
 
     private long addLocationToDB(String latlng, String name) {
